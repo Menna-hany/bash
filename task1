@@ -1,0 +1,54 @@
+#!/bin/bash 
+cd /media 
+mkdir mybackup 
+cd ~ 
+
+PS3="please choose the day when you want the backup to be taken"
+select day in sunday monday tuesday wednesday thursday friday saturday daily  
+do
+case $day in
+sunday) d=0
+break ;;
+monday) d=1 
+break ;;
+tuesday) d=2 
+break;;
+wednesday) d=3
+break;;
+thursday) d=4
+break ;;
+friday) d=5
+break ;;
+saturday) d=6
+break ;;
+daily) d=\*
+break ;;
+esac
+done 
+#########################################################################
+echo 
+echo 
+PS3="Do you want the backup to be taken on a certain hour"
+select hour in yes no 
+do 
+case $hour in
+yes) echo " enter the hour in 24 format "
+read h 
+break;;
+no)
+h=\* 
+break ;; 
+esac
+done 
+############################################################################
+echo 
+echo 
+echo "how many versions of backup you want to keep " 
+read v 
+vv=v+1
+###########################################################################
+f=`date +%b-%d`
+file=/media/mybackup/$f.tar.gz
+folder=/home
+echo " * $h * * $d   root   tar cpzf $file $folder " >> /etc/crontab
+echo " * *  * * *    root   cd /media/mybackup ; if [[ $(ls /media/mybackup | wc -l) > $v ]]; then   find /media/mybackup ! -newer $(ls -t | sed "$vv!d") -exec rm {} \;; fi " >> /etc/crontab 
