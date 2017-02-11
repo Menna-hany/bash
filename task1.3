@@ -1,0 +1,22 @@
+#!/bin/bash 
+set -x 
+cd /media 
+if [ ! -d mybackup ]
+then 
+	mkdir mybackup 
+fi
+cd mybackup 
+count=`find . -name '*.backup#*' | wc -l `
+if [ $count -gt 0 ]
+then 
+	echo found 
+else    
+	d=`date +%b-%d`
+	touch $d.backup\#01 
+fi
+
+#f=`date +%b-%d`
+#file=/media/mybackup/$f.tar.gz
+#folder=/home
+#echo " * $h * * $d   root   tar cpzf $file $folder " >> /etc/crontab
+#echo " * *  * * *    root   cd /media/mybackup ; if [[ $(ls /media/mybackup | wc -l) > $v ]]; then   find /media/mybackup ! -newer $(ls -t | sed "$vv!d") -exec rm {} \;; fi " >> /etc/crontab 
